@@ -2,8 +2,10 @@
 import { ref } from 'vue'
 import { onMounted } from '@vue/runtime-core';
 import { useQuizStore } from '../stores/quiz';
+import { useLoginStore } from '../stores/login';
 
 const quizStore = useQuizStore();
+const loginStore = useLoginStore();
 
 onMounted(async () => {
   await quizStore.fetchQuestions();
@@ -17,6 +19,10 @@ onMounted(async () => {
   </div>
 
   <div v-else>
+    <div class="d-flex justify-space-between">
+      <h3>Welcome, {{ loginStore.user.email }}</h3>
+      <v-btn color="red text-white" @click="loginStore.logout()">Logout</v-btn>
+    </div>
     <v-card :title="q.question" :subtitle="`Category: ${q.category}`" class="mt-5" elevation="3"
       v-for="(q, index) in quizStore.questions" :key="q">
       <v-card-text>
